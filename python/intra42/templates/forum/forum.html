@@ -1,0 +1,41 @@
+{% extends "intra42/base.html" %}
+
+{% block title %}Intra42{% endblock %}
+
+{% block content %}
+	<h1>Voici les categories disponibles</h1>
+	{% for categorie in categories %}
+	<ul>
+	    <div class="categories">
+	    	<h4>{{ categorie.titre }}</h4>
+	    </div>
+	</ul>
+	{% empty %}
+	    <p>Aucunes categories.</p>
+	{% endfor %}
+
+	<h1>Voici les derniers articles</h1>
+
+	{% for article in derniers_articles %}
+	    <div class="article">
+	    	<h3>{{ article.titre }} <span class="small"> par {{ article.auteur }}</span></h3>
+	    	<p>{{ article.contenu|truncatewords_html:80 }}</p>
+	    	<p><a class="button" href="{% url "forum.views.lire" article.id article.slug %}">Lire la suite</a>
+	    </div>
+	{% empty %}
+	    <p>Aucun article.</p>
+	{% endfor %}
+
+	{# Mise en forme de la pagination ici #}
+	{% if is_paginated %}
+	    <div class="pagination">
+	           {% if page_obj.has_previous %}
+	               <a class="pagin" href="?page={{ page_obj.previous_page_number }}">Précédente</a> —
+	           {% endif %}
+	           Page {{ page_obj.number }} sur {{ page_obj.paginator.num_pages }} 
+	           {% if page_obj.has_next %}
+	              — <a class="pagin" href="?page={{ page_obj.next_page_number }}">Suivante</a>
+	           {% endif %}
+	    </div>
+	{% endif %}
+{% endblock %}

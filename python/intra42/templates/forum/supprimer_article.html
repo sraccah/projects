@@ -1,0 +1,11 @@
+{% extends "intra42/base.html" %}
+
+{% block title %}Intra42{% endblock %}
+
+{% block content %}
+	<h4>Vous confirmez vouloir supprimer le sujet <span class="color_red">{{ article.titre }}</span> écrit par, <span class="color_red">{{ article.auteur }}</span> ?</h4>
+	<form method="post">
+	  {% csrf_token %}
+	  <button type="submit">Je confirme.</button>
+	</form>
+{% endblock %}

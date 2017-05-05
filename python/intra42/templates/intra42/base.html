@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="fr-FR">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Gros Projet Web - 2014 - Intra42">
+    <meta name="author" content="Stouf">
+
+    <title>Intra42</title>
+
+    <!-- CSS -->
+    <link href="/assets/style.css" rel="stylesheet">
+  </head>
+
+<body>
+       {% block nav %}
+    <nav class="menu">
+       <ul>
+          <span class="center">
+            <li><a href="/intra42/">Accueil</a></li>
+            <li><a href="/intra42/register/">S'enregistrer</a></li>
+            <li><a href="/intra42/forum/">Forum</a></li>
+            {% if user.is_authenticated %}
+            <li><a href="/intra42/forum/ajouter/">Ajouter un sujet</a></li>
+            <li><a href="/intra42/ticket/">Tickets</a></li>
+            {% endif %}
+          </span>
+          <span class="right">
+            {% if user.is_authenticated %}
+            <li><a href="/intra42/logout/">Deconnexion</a></li>
+            {% else %}
+            <li><a href="/accounts/login/">Connexion</a></li>
+            {% endif %}
+            {% if user.is_authenticated %}
+            <li><a href="/intra42/profile/">Mon compte</a></li>
+            {% if user.is_superuser %}
+            <li><a href="/admin/">Admin (BDD)</a></li>
+            {% endif %}
+            {% endif %}
+          </span>
+       </ul>
+   </nav>
+       {% endblock %}
+
+   <section id="content">
+       {% block content %}{% endblock %}
+   </section>
+
+      <footer>
+          <p class="copy">&copy; Bro2Code -<span class="bro"> sraccah / msarr </span>- 2014 - Intra42<br /></p>
+      </footer>
+
+  </body>
+</html>

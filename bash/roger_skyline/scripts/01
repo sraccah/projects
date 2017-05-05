@@ -1,0 +1,4 @@
+#!/bin/sh
+whoami
+id -u
+echo "/etc/passwd"

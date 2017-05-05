@@ -1,0 +1,44 @@
+{% extends "intra42/base.html" %}
+
+{% block title %}Intra42{% endblock %}
+
+{% block content %}
+	<div class="lire_article">
+		<h1>{{ article.titre }} <span class="small">dans {{ article.categorie }}</span></h1>
+		<p class="infos">Rédigé par {{ article.auteur }}, le {{ article.date|date:"DATE_FORMAT" }}</p>
+		<div class="contenu">{{ article.contenu|linebreaks }}</div>
+	</div>
+	<div>
+	<form action="" method="post">{% csrf_token %}
+    	<input class="com" type="submit" value="Commenter" />
+    	<input type="hidden" name="next" value="/intra42/forum/commenter/" />
+	</form>
+	</div>
+	<div>
+		<a class="supprimer" href="{% url 'supprimer' pk=article.pk %}">Supprimer le sujet</a>
+	</div>
+
+	<h3 class="h_com">Commentaires sur le sujet :</h3>
+	{% for commentaire in commentaires %}
+	<div class="commentaire">
+	    <h5>Rédigé par {{ commentaire.auteur }}, le {{ commentaire.date|date:"DATE_FORMAT" }}</h5>
+	    <p>{{ commentaire.titre }}</p>
+	    <p>{{ commentaire.contenu }}</p>
+	</div>
+	{% empty %}
+	    <p class="empty">Pas de commentaires pour le moment.</p>
+	{% endfor %}
+	
+	{# Mise en forme de la pagination ici #}
+	{% if is_paginated %}
+	    <div class="pagination">
+	           {% if page_obj.has_previous %}
+	               <a href="?page={{ page_obj.previous_page_number }}">Précédente</a> —
+	           {% endif %}
+	           Page {{ page_obj.number }} sur {{ page_obj.paginator.num_pages }} 
+	           {% if page_obj.has_next %}
+	              — <a href="?page={{ page_obj.next_page_number }}">Suivante</a>
+	           {% endif %}
+	    </div>
+	{% endif %}
+{% endblock %}

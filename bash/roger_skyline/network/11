@@ -1,0 +1,1 @@
+traceroute slash16.org | grep nat-1 | awk '{print $2, $3}'

@@ -1,0 +1,25 @@
+forum_accueil:
+    path:    /{page}
+    defaults:    { _controller: ForumForumBundle:Forum:index, page: 1 }
+    requirements:
+        page:    \d*
+
+forum_voir:
+    path:        /article/{id}
+    defaults:    { _controller: ForumForumBundle:Forum:voir }
+
+forum_ajouter:
+    path:        /ajouter
+    defaults:    { _controller: ForumForumBundle:Forum:ajouter }
+
+forum_modifier:
+    path:        /modifier/{id}
+    defaults:    { _controller: ForumForumBundle:Forum:modifier }
+    requirements:
+        id:    \d+
+
+forum_supprimer:
+    path:        /supprimer/{id}
+    defaults:    { _controller: ForumForumBundle:Forum:supprimer }
+    requirements:
+        id:    \d+

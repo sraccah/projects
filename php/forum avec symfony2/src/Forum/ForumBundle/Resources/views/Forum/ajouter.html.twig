@@ -1,0 +1,12 @@
+{# src/Forum/ForumBundle/Resources/views/Forum/modifier.html.twig #}
+{% extends "ForumForumBundle::layout.html.twig" %}
+{% block title %}
+Ajouter un sujet - {{ parent() }}
+{% endblock %}
+{% block forum_body %}
+<h2>Ajouter un sujet</h2>
+{% include "ForumForumBundle:Forum:formulaire.html.twig" %}
+<p>
+Vous ajoutez un nouveau sujet.
+</p>
+{% endblock %}

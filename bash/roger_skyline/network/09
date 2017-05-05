@@ -1,0 +1,1 @@
+Lorsque l'on interroge d'un serveur DNS local toutes les adresse IP sont retournées. Contrairement à ce qui est retourné lorsque l'on interroge 42.fr depuis un serveur DNS externe comme celui de Google 8.8.8.8. En effet, seul 2 adresses IP publiques sont retournées quand ont interroge d'un serveur DNS externe.

@@ -1,0 +1,1 @@
+ifconfig eth0 | grep HWaddr | awk '{print $5}'

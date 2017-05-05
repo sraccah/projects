@@ -1,0 +1,25 @@
+{% extends "intra42/base.html" %}
+
+{% block title %}Intra42{% endblock %}
+
+{% block content %}
+{% if envoi %}Votre ticket a bien été envoyé !{% endif %}
+	<p>Voici les tickets que vous avez transmis :</p>
+	{% for ticket in tickets %}
+	<ul>
+	    <div class="categories">
+	    	<h4>{{ ticket.titre }}</h4>
+	    </div>
+	</ul>
+	{% empty %}
+	    <p>Aucuns tickets.</p>
+	{% endfor %}
+	<hr>
+	<div class="ticket_form">
+		<h3>Create Ticket</h3>
+		<form action="{% url "forum.views.ticket" %}" method="post">{% csrf_token %}
+    		{{ form.as_p }}
+		<input type="submit" value="Envoyer" />
+		</form>
+	</div>
+{% endblock %}

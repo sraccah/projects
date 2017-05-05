@@ -1,0 +1,118 @@
+#64				   #32				   #16						#8				<= Architectures (en bytes)
+-----------------------------------------------------------------|----------
+|					|					|				|		/ \		   |
+
+RAX				   EAX				    AX			    AH				   AL 	<= RETURN principale ! // %temp
+RBX				   EBX				    BX			    BH				   BL 	<= (?) // Callee Saved <= Pointeur sur base
+RCX				   ECX				    CX			    CH				   CL	<= Argument 4 <= Compteur de boucle ! // offset 24 
+RDX				   EDX				    DX			    DH				   DL	<= Argument 3 <= RETURN secondaire	// offset 16
+RSI				   ESI					SI								   SIL	<= Argument 2 // offset 8 <= Adresse source pour déplacement ou comparaison
+RDI				   EDI					DI								   DIL	<= Argument 1 // offset 0 <= Adresse destination pour déplacement ou comparaison
+RBP				   EBP					BP								   BPL 	<= (?) // Callee Saved	<= Pointeur sur frame
+RSP				   ESP					SP								   SPL	<= Pointeur sur la STACK !
+R8				   R8D					R8W								   R8B	<= Argument 5 // offset 32
+R9				   R9D					R9W								   R9B	<= Argument 6 // offset 40
+R10				   R10D					R10W							   R10B	<= Pointeur sur une chaine static // %temp
+R11				   R11D					R11W							   R11B // %temp
+R12				   R12D					R12W							   R12B	/*
+R13				   R13D					R13W							   R13B	**		(?)
+R14				   R14D					R14W							   R14B	**	Callee Saved
+R15				   R15D					R15W							   R15B	*/
+RIP				   RIPD					RIPW							   RIPB	<= Compteur de programme // Pointeur sur instruction
+
+(?) = Registres qui "appartiennent" a la fonction appelante, si les registres sont nécessaires,
+	  par la fonction appelee, leurs contenu peut etre stocke sur la pile et restaure avant le
+	  retour a la fontion appelante (ret)
+
+// section data									 |	// section bss
+_________________________________________________|_________________________________
+db = 1 octet (8 bits, 1 byte)					 |	resb = reserve un octet
+dw = 1 mot (16 bits, 2 byte)					 |	resw = reserve un mot
+dd = 1 double mot (32 bits, 4 byte)				 |	resd = reserve un double mot
+dq = 1 quadruple mot (64 bits, 8 byte)			 |	resq = reserve un quadruple mot
+_________________________________________________|_________________________________
+// section rodata (pour les variables globales)	 |	// section text (pour le code)
+
+___________________________________________________________________________________________________
+FLAGS							|	BIT 	|	FONCTION 										   |
+________________________________|___________|______________________________________________________|
+CF Carry Flag 					|	0		|	retenue											   |
+PF Parity Flag 					|	2		|													   |
+AF Auxiliary Carry Flag 		|	4		|													   |
+ZF Zero Flag 					|	6		|	vaut 1 lorsque le résultat est 0				   |
+SF Sign Flag 					|	7		|	bit de signe du résultat						   |
+OF Overflow Flag 				|	11		|	dépassement, le résultat contient trop de bits	   |
+DF Direction Flag 				|	10		|	sens d’incrémentation de ESI et EDI				   |
+TF Task Flag 					|	8		|	active la gestion de tâche en mode protégé		   |
+IF Interrupt Flag 				|	9		|	interruption									   |
+IOPL I/O Privilege Level 		| 12 / 13	|													   |
+NT Nested Task 					|	14		|													   |
+RF Resume Flag 					|	16		|	active le mode debug							   |
+VM Vitrual 8086 				|	17		|													   |
+AC Alignement Check 			|	18		|													   |
+VIF Virtual Interrupt Flag 		|	19		|													   |
+VIP Virtual Interrupt Pending	|	20		|													   |
+ID Identification Flag 			|	21		|													   |
+___________________________________________________________________________________________________|
+
+// INTEL x86 CMP JUMP REF
++--------+------------------------------+-------------+--------------------+
+|Instr   | Description                  | signed-ness | Flags              |
++--------+------------------------------+-------------+--------------------+
+| JO     | Jump if overflow             |             | OF = 1             |
++--------+------------------------------+-------------+--------------------+
+| JNO    | Jump if not overflow         |             | OF = 0             |
++--------+------------------------------+-------------+--------------------+
+| JS     | Jump if sign                 |             | SF = 1             |
++--------+------------------------------+-------------+--------------------+
+| JNS    | Jump if not sign             |             | SF = 0             |
++--------+------------------------------+-------------+--------------------+
+| JE/    | Jump if equal                |             | ZF = 1             |
+| JZ     | Jump if zero                 |             |                    |
++--------+------------------------------+-------------+--------------------+
+| JNE/   | Jump if not equal            |             | ZF = 0             |
+| JNZ    | Jump if not zero             |             |                    |
++--------+------------------------------+-------------+--------------------+
+| JP/    | Jump if parity               |             | PF = 1             |
+| JPE    | Jump if parity even          |             |                    |
++--------+------------------------------+-------------+--------------------+
+| JNP/   | Jump if no parity            |             | PF = 0             |
+| JPO    | Jump if parity odd           |             |                    |
++--------+------------------------------+-------------+--------------------+
+| JCXZ/  | Jump if CX is zero           |             | CX = 0             |
+| JECXZ  | Jump if ECX is zero          |             | ECX = 0            |
++--------+------------------------------+-------------+--------------------+
+
++--------+------------------------------+-------------+--------------------+
+|Instr   | Description                  | signed-ness | Flags              |
++--------+------------------------------+-------------+--------------------+
+| JB/    | Jump if below                | unsigned    | CF = 1             |
+| JNAE/  | Jump if not above or equal   |             |                    |
+| JC     | Jump if carry                |             |                    |
++--------+------------------------------+-------------+--------------------+
+| JNB/   | Jump if not below            | unsigned    | CF = 0             |
+| JAE/   | Jump if above or equal       |             |                    |
+| JNC    | Jump if not carry            |             |                    |
++--------+------------------------------+-------------+--------------------+
+| JBE/   | Jump if below or equal       | unsigned    | CF = 1 or ZF = 1   |
+| JNA    | Jump if not above            |             |                    |
++--------+------------------------------+-------------+--------------------+
+| JA/    | Jump if above                | unsigned    | CF = 0 and ZF = 0  |
+| JNBE   | Jump if not below or equal   |             |                    |
++--------+------------------------------+-------------+--------------------+
+
++--------+------------------------------+-------------+--------------------+
+|Instr   | Description                  | signed-ness | Flags              |
++--------+------------------------------+-------------+--------------------+
+| JL/    | Jump if less                 | signed      | SF <> OF           |
+| JNGE   | Jump if not greater or equal |             |                    |
++--------+------------------------------+-------------+--------------------+
+| JGE/   | Jump if greater or equal     | signed      | SF = OF            |
+| JNL    | Jump if not less             |             |                    |
++--------+------------------------------+-------------+--------------------+
+| JLE/   | Jump if less or equal        | signed      | ZF = 1 or SF <> OF |
+| JNG    | Jump if not greater          |             |                    |
++--------+------------------------------+-------------+--------------------+
+| JG/    | Jump if greater              | signed      | ZF = 0 and SF = OF |
+| JNLE   | Jump if not less or equal    |             |                    |
++--------+------------------------------+-------------+--------------------+

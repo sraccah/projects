@@ -1,0 +1,13 @@
+{% extends "intra42/base.html" %}
+
+{% block title %}Intra42 - Ajouter un sujet{% endblock %}
+
+{% block content %}
+	<div class="login_form">
+		<h3>Ajouter un sujet</h3>
+  		<form action="{% url "forum.views.ajouter" %}" method="post">{% csrf_token %}
+    		{{ form.as_p }}
+    		<input type="submit" value="Envoyer" />
+  		</form>
+	</div>
+{% endblock %}

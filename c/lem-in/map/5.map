@@ -1,0 +1,27 @@
+42
+#commmmmmm
+##cmdddddd
+0 0 0
+##start
+1 2 2
+##cmdddddd
+2 5 3
+#commmmmmm
+3 6 2
+##end
+4 7 4
+##cmdddddd
+5 5 9
+#commmmmmm
+6 10 10
+1-2
+##cmdddddd
+1-3
+#commmmmmm
+2-5
+2-3
+##cmdddddd
+2-6
+3-5
+5-6
+6-4
